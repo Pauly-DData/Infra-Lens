@@ -40,7 +40,10 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=dummy
           export AWS_DEFAULT_REGION=us-east-1
           
-          # Run CDK diff with --no-staging to skip actual AWS deployment
+          # First synthesize the app without staging
+          npx cdk synth --no-staging
+          
+          # Then run the diff
           npx cdk diff --no-staging --json > cdk-diff.json
           python summarize_and_comment.py
         env:
