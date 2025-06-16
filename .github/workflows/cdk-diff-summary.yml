@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+          cache: 'npm'
           
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -26,8 +27,11 @@ jobs:
           python-version: '3.9'
           
       - name: Install Node.js dependencies
-        run: npm install
-        
+        run: |
+          npm install
+          node --version
+          npm --version
+          
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
@@ -40,11 +44,27 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=dummy
           export AWS_DEFAULT_REGION=us-east-1
           
+          # Debug: Show current directory and files
+          pwd
+          ls -la
+          
           # First synthesize the app without staging
+          echo "Running CDK synth..."
           npx cdk synth --no-staging
           
+          # Debug: Show cdk.out directory
+          echo "Contents of cdk.out:"
+          ls -la cdk.out || echo "cdk.out not found"
+          
           # Then run the diff
+          echo "Running CDK diff..."
           npx cdk diff --no-staging --json > cdk-diff.json
+          
+          # Debug: Show diff file
+          echo "Contents of cdk-diff.json:"
+          cat cdk-diff.json || echo "cdk-diff.json not found"
+          
+          # Run the Python script
           python summarize_and_comment.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
