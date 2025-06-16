@@ -24,7 +24,7 @@
       "aws-cn"
     ],
     "@aws-cdk-containers/ecs-service-extensions:enableDefaultLogDriver": true,
-    "@aws-cdk/aws-ec2:uniqueImdsv2TemplateName": true,
+    "@aws-cdk/aws-ec2:uniqueImdsv2TemplateName": false,
     "@aws-cdk/aws-ecs:arnFormatIncludesClusterName": true,
     "@aws-cdk/aws-iam:minimizePolicies": true,
     "@aws-cdk/core:validateSnapshotRemovalPolicy": true,
