@@ -84,7 +84,7 @@ jobs:
       - name: Generate CDK diff
         run: |
           echo "Generating CDK diff..."
-          npx cdk diff --json > cdk-diff.json
+          npx cdk diff --no-staging --json > cdk-diff.json
           echo "Checking cdk-diff.json:"
           ls -la cdk-diff.json || echo "cdk-diff.json not found"
 
