@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -35,7 +35,13 @@ jobs:
           
       - name: Run CDK diff and summarize
         run: |
-          npx cdk diff --json > cdk-diff.json
+          # Set dummy AWS credentials
+          export AWS_ACCESS_KEY_ID=dummy
+          export AWS_SECRET_ACCESS_KEY=dummy
+          export AWS_DEFAULT_REGION=us-east-1
+          
+          # Run CDK diff with --no-staging to skip actual AWS deployment
+          npx cdk diff --no-staging --json > cdk-diff.json
           python summarize_and_comment.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
