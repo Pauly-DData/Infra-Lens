@@ -13,6 +13,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Debug repository structure
+        run: |
+          echo "Root directory contents:"
+          ls -la
+          echo "Current directory:"
+          pwd
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -32,7 +39,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd cdk-diff-summarizer
           npm install
           npm install -g aws-cdk@latest
           echo "CDK version:"
@@ -46,7 +52,6 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          cd cdk-diff-summarizer
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
@@ -62,7 +67,6 @@ jobs:
 
       - name: Initialize and synthesize CDK app
         run: |
-          cd cdk-diff-summarizer
           echo "Current directory before CDK commands:"
           pwd
           echo "Directory contents before CDK commands:"
@@ -78,7 +82,6 @@ jobs:
 
       - name: Generate CDK diff
         run: |
-          cd cdk-diff-summarizer
           echo "Generating CDK diff..."
           npx cdk diff --json > cdk-diff.json
           echo "Checking cdk-diff.json:"
@@ -88,6 +91,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          cd cdk-diff-summarizer
-          python summarize_and_comment.py 
+        run: python summarize_and_comment.py 
