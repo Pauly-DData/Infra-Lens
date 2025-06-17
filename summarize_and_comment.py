@@ -5,16 +5,16 @@ from github import Github
 import openai
 
 def read_cdk_diff() -> Dict:
-    path = ' cdk-diff.json'
-    if not os.pat_exists(path):
-        raise FileNotFoundError(f"{path} not found")
-    
-    with open('cdk-diff.json', 'r') as f:
+    path = 'cdk-diff.json'
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"{path} not found.")
+
+    with open(path, 'r') as f:
         content = f.read().strip()
         if not content:
-            raise ValueError("CDK diff file is empty")
+            raise ValueError(f"{path} is empty.")
         return json.loads(content)
-
+    
 def generate_prompt(diff_data: Dict) -> str:
     """Generate a prompt for the OpenAI API based on CDK diff data."""
     changes = []
@@ -96,8 +96,9 @@ def main():
     summary = get_ai_summary(prompt)
     
     # Print summary to GitHub Actions log with notice formatting
-    print("::notice::CDK Changes Summary")
+    print("::notice::✅ AI Summary van CDK wijzigingen:")
     print(f"::notice::{summary}")
+
     
     # Post summary to PR
     post_to_github(summary)
