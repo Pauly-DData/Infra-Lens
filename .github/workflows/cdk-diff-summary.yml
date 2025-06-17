@@ -71,7 +71,7 @@ jobs:
           echo "🔒 Current AWS Account:"
           aws sts get-caller-identity
           echo "🔒 Current AWS Region:"
-          aws configure get region
+          echo "${{ secrets.AWS_REGION }}"
 
       - name: Bootstrap CDK (if needed)
         run: |
