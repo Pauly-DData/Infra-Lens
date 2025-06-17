@@ -61,7 +61,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: eu-central-1
 
       - name: Safety Check - Verify AWS Account
         run: |
@@ -70,6 +70,13 @@ jobs:
           echo "🔒 This operation is free and safe to run"
           echo "🔒 Current AWS Account:"
           aws sts get-caller-identity
+          echo "🔒 Current AWS Region:"
+          aws configure get region
+
+      - name: Bootstrap CDK (if needed)
+        run: |
+          echo "Bootstrapping CDK in eu-central-1..."
+          npx cdk bootstrap aws://085960855804/eu-central-1
 
       - name: Initialize and synthesize CDK app
         run: |

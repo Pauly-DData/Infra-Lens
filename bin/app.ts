@@ -7,6 +7,6 @@ const app = new cdk.App();
 new DummyStack(app, 'DummyStack', {
   env: {
     account: '085960855804',
-    region: 'eu-central-1`',
+    region: 'eu-central-1',
   },
 }); 
