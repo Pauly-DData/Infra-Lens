@@ -6,7 +6,7 @@ import { DummyStack } from '../dummy_stack/dummy_stack';
 const app = new cdk.App();
 new DummyStack(app, 'DummyStack', {
   env: {
-    account: '123456789012',
-    region: 'us-east-1',
+    account: '085960855804',
+    region: 'eu-central-1`',
   },
 }); 
