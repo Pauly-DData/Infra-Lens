@@ -16,6 +16,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Validate AWS Region
+        run: |
+          if [ -z "$AWS_REGION" ]; then
+            echo "Error: AWS_REGION is not set"
+            exit 1
+          fi
+          echo "Using AWS Region: $AWS_REGION"
+
       - name: Debug repository structure
         run: |
           echo "Root directory contents:"
@@ -74,7 +82,8 @@ jobs:
           echo "🔒 Current AWS Account:"
           aws sts get-caller-identity
           echo "🔒 Current AWS Region:"
-          echo "$AWS_REGION"
+          aws configure get region || echo "Region not configured"
+          echo "Environment AWS_REGION: $AWS_REGION"
 
       - name: Bootstrap CDK (if needed)
         run: |
