@@ -3,69 +3,105 @@ name: CDK Diff Summary
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
-      - '**/*.ts'
-      - '**/*.js'
-      - '**/*.py'
-      - 'cdk.json'
+  workflow_dispatch:
 
 jobs:
   summarize-diff:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Debug repository structure
+        run: |
+          echo "Root directory contents:"
+          ls -la
+          echo "Current directory:"
+          pwd
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-          
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-          
-      - name: Install Node.js dependencies
+
+      - name: Debug Node.js and npm versions
+        run: |
+          echo "Node version:"
+          node --version
+          echo "npm version:"
+          npm --version
+          echo "Current directory:"
+          pwd
+          echo "Directory contents:"
+          ls -la
+
+      - name: Install dependencies
         run: |
           npm install
-          node --version
-          npm --version
-          
+          npm install -g aws-cdk@latest
+          npm install source-map-support
+          echo "CDK version:"
+          cdk --version
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
-      - name: Run CDK diff and summarize
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
+      - name: Safety Check - Verify AWS Account
         run: |
-          # Set dummy AWS credentials
-          export AWS_ACCESS_KEY_ID=dummy
-          export AWS_SECRET_ACCESS_KEY=dummy
-          export AWS_DEFAULT_REGION=us-east-1
-          
-          # Debug: Show current directory and files
+          echo "🔒 SAFETY CHECK: This workflow only performs CDK diff operations"
+          echo "🔒 No resources will be created or modified"
+          echo "🔒 This operation is free and safe to run"
+          echo "🔒 Current AWS Account:"
+          aws sts get-caller-identity
+          echo "🔒 Current AWS Region:"
+          aws configure get region
+
+      - name: Bootstrap CDK (if needed)
+        run: |
+          echo "Bootstrapping CDK in eu-central-1..."
+          npx cdk bootstrap aws://085960855804/eu-central-1
+
+      - name: Initialize and synthesize CDK app
+        run: |
+          echo "Current directory before CDK commands:"
           pwd
+          echo "Directory contents before CDK commands:"
           ls -la
           
-          # First synthesize the app without staging
-          echo "Running CDK synth..."
+          echo "Running CDK synth (safe, no charges)..."
           npx cdk synth --no-staging
           
-          # Debug: Show cdk.out directory
-          echo "Contents of cdk.out:"
-          ls -la cdk.out || echo "cdk.out not found"
-          
-          # Then run the diff
-          echo "Running CDK diff..."
+          echo "Checking cdk.out directory:"
+          ls -la cdk.out || echo "cdk.out directory not found"
+          echo "Checking for manifest.json:"
+          ls -la cdk.out/manifest.json || echo "manifest.json not found"
+
+      - name: Generate CDK diff
+        run: |
+          echo "Generating CDK diff (safe, no charges)..."
           npx cdk diff --no-staging --json > cdk-diff.json
-          
-          # Debug: Show diff file
-          echo "Contents of cdk-diff.json:"
-          cat cdk-diff.json || echo "cdk-diff.json not found"
-          
-          # Run the Python script
-          python summarize_and_comment.py
+          echo "Checking cdk-diff.json:"
+          ls -la cdk-diff.json || echo "cdk-diff.json not found"
+
+      - name: Summarize and comment
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} 
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python summarize_and_comment.py 

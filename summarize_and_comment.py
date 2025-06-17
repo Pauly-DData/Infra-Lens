@@ -5,8 +5,15 @@ from github import Github
 import openai
 
 def read_cdk_diff() -> Dict:
+    path = ' cdk-diff.json'
+    if not os.pat_exists(path):
+        raise FileNotFoundError(f"{path} not found")
+    
     with open('cdk-diff.json', 'r') as f:
-        return json.load(f)
+        content = f.read().strip()
+        if not content:
+            raise ValueError("CDK diff file is empty")
+        return json.loads(content)
 
 def generate_prompt(diff_data: Dict) -> str:
     """Generate a prompt for the OpenAI API based on CDK diff data."""
