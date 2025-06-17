@@ -66,19 +66,26 @@ Please summarize these changes in a way that would be helpful for a non-technica
 
 def get_ai_summary(prompt: str) -> str:
     """Get a summary from OpenAI API."""
-    client = openai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-    
-    response = client.chat.completions.create(
-        model="gpt-4",
-        messages=[
-            {"role": "system", "content": "You are an expert AWS infrastructure architect who can explain complex infrastructure changes in simple terms."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.7,
-        max_tokens=500
-    )
-    
-    return response.choices[0].message.content
+    try:
+        client = openai.OpenAI(
+            api_key=os.getenv('OPENAI_API_KEY'),
+            base_url="https://api.openai.com/v1"
+        )
+        
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an expert AWS infrastructure architect who can explain complex infrastructure changes in simple terms."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            max_tokens=500
+        )
+        
+        return response.choices[0].message.content
+    except Exception as e:
+        print(f"::warning::Failed to get AI summary: {str(e)}")
+        return "Failed to generate AI summary. Please check the GitHub Actions logs for details."
 
 def post_to_github(summary: str):
     """Post the summary as a comment on the PR."""
