@@ -96,18 +96,12 @@ jobs:
       - name: Generate CDK diff
         run: |
           echo "Generating CDK diff (safe, no charges)..."
-<<<<<<< HEAD
-          npx cdk diff --no-staging --json > cdk-diff.json
-          echo "Checking cdk-diff.json:"
-          ls -la cdk-diff.json || echo "cdk-diff.json not found"
-=======
           npx cdk diff --no-staging --json > cdk-diff.json || echo "{}" > cdk-diff.json
           echo "Checking cdk-diff.json:"
           cat cdk-diff.json || echo "cdk-diff.json not found"
->>>>>>> 594e191 (fixed)
 
       - name: Summarize and comment
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python summarize_and_comment.py 
+        run: python summarize_and_comment.py
