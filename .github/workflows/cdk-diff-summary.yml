@@ -8,6 +8,9 @@ on:
 jobs:
   summarize-diff:
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,7 +64,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Safety Check - Verify AWS Account
         run: |
@@ -71,12 +74,12 @@ jobs:
           echo "🔒 Current AWS Account:"
           aws sts get-caller-identity
           echo "🔒 Current AWS Region:"
-          echo "${{ secrets.AWS_REGION }}"
+          echo "$AWS_REGION"
 
       - name: Bootstrap CDK (if needed)
         run: |
-          echo "Bootstrapping CDK in eu-central-1..."
-          npx cdk bootstrap aws://085960855804/eu-central-1
+          echo "Bootstrapping CDK in $AWS_REGION..."
+          npx cdk bootstrap aws://085960855804/$AWS_REGION
 
       - name: Initialize and synthesize CDK app
         run: |
