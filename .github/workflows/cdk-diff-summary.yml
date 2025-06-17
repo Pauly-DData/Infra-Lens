@@ -56,15 +56,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Set dummy AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Safety Check - Verify AWS Account
         run: |
-          export AWS_ACCESS_KEY_ID=dummy
-          export AWS_SECRET_ACCESS_KEY=dummy
-          export AWS_DEFAULT_REGION=us-east-1
-          echo "Current directory:"
-          pwd
-          echo "Directory contents:"
-          ls -la
+          echo "🔒 SAFETY CHECK: This workflow only performs CDK diff operations"
+          echo "🔒 No resources will be created or modified"
+          echo "🔒 This operation is free and safe to run"
+          echo "🔒 Current AWS Account:"
+          aws sts get-caller-identity
 
       - name: Initialize and synthesize CDK app
         run: |
@@ -73,7 +78,7 @@ jobs:
           echo "Directory contents before CDK commands:"
           ls -la
           
-          echo "Running CDK synth..."
+          echo "Running CDK synth (safe, no charges)..."
           npx cdk synth --no-staging
           
           echo "Checking cdk.out directory:"
@@ -83,7 +88,7 @@ jobs:
 
       - name: Generate CDK diff
         run: |
-          echo "Generating CDK diff..."
+          echo "Generating CDK diff (safe, no charges)..."
           npx cdk diff --no-staging --json > cdk-diff.json
           echo "Checking cdk-diff.json:"
           ls -la cdk-diff.json || echo "cdk-diff.json not found"
