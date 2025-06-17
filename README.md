@@ -18,8 +18,8 @@ This GitHub Action automatically generates human-readable summaries of AWS CDK i
 2. The workflow will automatically:
    - Run on pull requests
    - Generate CDK diffs
-   - Create AI summaries
-   - Post results to the PR
+   - Create AI impact and changes summaries in the actions log
+   - Also post results to the PR
 
 ## Requirements
 
