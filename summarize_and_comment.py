@@ -107,13 +107,18 @@ def get_ai_summary_with_retry(prompt: str, max_retries: int = 3) -> str:
                 return "Rate limit exceeded. Please try again later."
                 
         except openai.APIError as e:
+            error_message = str(e)
+            if "insufficient_quota" in error_message or "quota" in error_message.lower():
+                print(f"::error::OpenAI quota exceeded: {error_message}")
+                return "OpenAI API quota exceeded. Please check your billing and usage limits."
+            
             if attempt < max_retries - 1:
                 wait_time = (2 ** attempt) + random.uniform(0, 1)
-                print(f"::warning::API error: {str(e)}. Waiting {wait_time:.2f} seconds before retry...")
+                print(f"::warning::API error: {error_message}. Waiting {wait_time:.2f} seconds before retry...")
                 time.sleep(wait_time)
             else:
-                print(f"::error::API error after {max_retries} attempts: {str(e)}")
-                return f"API error: {str(e)}"
+                print(f"::error::API error after {max_retries} attempts: {error_message}")
+                return f"API error: {error_message}"
                 
         except Exception as e:
             print(f"::error::Unexpected error on attempt {attempt + 1}: {str(e)}")
@@ -144,22 +149,41 @@ def post_to_github(summary: str):
         
         print(f"::notice::Event data keys: {list(event_data.keys())}")
         
-        # Handle different event types
+        # Try to get PR number from different possible locations
+        pr_number = None
+        repo_name = None
+        
+        # Method 1: Direct pull_request event
         if 'pull_request' in event_data:
             pr_number = event_data['pull_request']['number']
             repo_name = event_data['repository']['full_name']
+            print(f"::notice::Found PR from pull_request event: #{pr_number}")
+        
+        # Method 2: Issue event with pull_request
         elif 'issue' in event_data and event_data.get('issue', {}).get('pull_request'):
             pr_number = event_data['issue']['number']
             repo_name = event_data['repository']['full_name']
-        else:
-            print(f"::warning::Unexpected event structure. Available keys: {list(event_data.keys())}")
+            print(f"::notice::Found PR from issue event: #{pr_number}")
+        
+        # Method 3: Try to get from context
+        elif 'repository' in event_data:
+            repo_name = event_data['repository']['full_name']
+            # Try to get PR number from environment variables
+            pr_number = os.getenv('GITHUB_PR_NUMBER')
+            if pr_number:
+                print(f"::notice::Found PR from environment variable: #{pr_number}")
+        
+        if not pr_number or not repo_name:
+            print(f"::warning::Could not determine PR number or repository name")
+            print(f"::warning::Available keys: {list(event_data.keys())}")
+            print(f"::warning::Repository info: {event_data.get('repository', 'Not found')}")
             return
         
         print(f"::notice::Posting comment to PR #{pr_number} in {repo_name}")
         
         g = Github(github_token)
         repo = g.get_repo(repo_name)
-        pr = repo.get_pull(pr_number)
+        pr = repo.get_pull(int(pr_number))
         pr.create_issue_comment(summary)
         
         print("::notice::Successfully posted comment to PR")
