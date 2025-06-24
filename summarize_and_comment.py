@@ -1,5 +1,7 @@
 import os
 import json
+import time
+import random
 from typing import Dict, List
 from github import Github
 import openai
@@ -64,28 +66,52 @@ Please summarize these changes in a way that would be helpful for a non-technica
 
     return prompt
 
-def get_ai_summary(prompt: str) -> str:
-    """Get a summary from OpenAI API."""
-    try:
-        client = openai.OpenAI(
-            api_key=os.getenv('OPENAI_API_KEY'),
-            base_url="https://api.openai.com/v1"
-        )
-        
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are an expert AWS infrastructure architect who can explain complex infrastructure changes in simple terms."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7,
-            max_tokens=500
-        )
-        
-        return response.choices[0].message.content
-    except Exception as e:
-        print(f"::warning::Failed to get AI summary: {str(e)}")
-        return "Failed to generate AI summary. Please check the GitHub Actions logs for details."
+def get_ai_summary_with_retry(prompt: str, max_retries: int = 3) -> str:
+    """Get a summary from OpenAI API with exponential backoff retry logic."""
+    client = openai.OpenAI(
+        api_key=os.getenv('OPENAI_API_KEY'),
+        base_url="https://api.openai.com/v1"
+    )
+    
+    for attempt in range(max_retries):
+        try:
+            print(f"::notice::Attempting OpenAI API call (attempt {attempt + 1}/{max_retries})")
+            
+            response = client.chat.completions.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": "You are an expert AWS infrastructure architect who can explain complex infrastructure changes in simple terms."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.7,
+                max_tokens=500
+            )
+            
+            return response.choices[0].message.content
+            
+        except openai.RateLimitError as e:
+            if attempt < max_retries - 1:
+                wait_time = (2 ** attempt) + random.uniform(0, 1)  # Exponential backoff with jitter
+                print(f"::warning::Rate limit hit. Waiting {wait_time:.2f} seconds before retry...")
+                time.sleep(wait_time)
+            else:
+                print(f"::error::Rate limit exceeded after {max_retries} attempts")
+                return "Rate limit exceeded. Please try again later."
+                
+        except openai.APIError as e:
+            if attempt < max_retries - 1:
+                wait_time = (2 ** attempt) + random.uniform(0, 1)
+                print(f"::warning::API error: {str(e)}. Waiting {wait_time:.2f} seconds before retry...")
+                time.sleep(wait_time)
+            else:
+                print(f"::error::API error after {max_retries} attempts: {str(e)}")
+                return f"API error: {str(e)}"
+                
+        except Exception as e:
+            print(f"::error::Unexpected error: {str(e)}")
+            return f"Failed to generate AI summary: {str(e)}"
+    
+    return "Failed to generate AI summary after all retry attempts."
 
 def post_to_github(summary: str):
     """Post the summary as a comment on the PR."""
@@ -119,7 +145,7 @@ def main():
         
         # Generate prompt and get AI summary
         prompt = generate_prompt(diff_data)
-        summary = get_ai_summary(prompt)
+        summary = get_ai_summary_with_retry(prompt)
         
         # Print summary to GitHub Actions log with notice formatting
         print("::notice::✅ AI Summary van CDK wijzigingen:")
