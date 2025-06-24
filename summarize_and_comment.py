@@ -68,10 +68,18 @@ Please summarize these changes in a way that would be helpful for a non-technica
 
 def get_ai_summary_with_retry(prompt: str, max_retries: int = 3) -> str:
     """Get a summary from OpenAI API with exponential backoff retry logic."""
-    client = openai.OpenAI(
-        api_key=os.getenv('OPENAI_API_KEY'),
-        base_url="https://api.openai.com/v1"
-    )
+    api_key = os.getenv('OPENAI_API_KEY')
+    if not api_key:
+        return "OpenAI API key not found in environment variables."
+    
+    try:
+        client = openai.OpenAI(
+            api_key=api_key,
+            base_url="https://api.openai.com/v1"
+        )
+    except Exception as e:
+        print(f"::error::Failed to initialize OpenAI client: {str(e)}")
+        return f"Failed to initialize OpenAI client: {str(e)}"
     
     for attempt in range(max_retries):
         try:
@@ -108,8 +116,13 @@ def get_ai_summary_with_retry(prompt: str, max_retries: int = 3) -> str:
                 return f"API error: {str(e)}"
                 
         except Exception as e:
-            print(f"::error::Unexpected error: {str(e)}")
-            return f"Failed to generate AI summary: {str(e)}"
+            print(f"::error::Unexpected error on attempt {attempt + 1}: {str(e)}")
+            if attempt < max_retries - 1:
+                wait_time = (2 ** attempt) + random.uniform(0, 1)
+                print(f"::warning::Waiting {wait_time:.2f} seconds before retry...")
+                time.sleep(wait_time)
+            else:
+                return f"Failed to generate AI summary after {max_retries} attempts: {str(e)}"
     
     return "Failed to generate AI summary after all retry attempts."
 
@@ -128,15 +141,38 @@ def post_to_github(summary: str):
     try:
         with open(event_path, 'r') as f:
             event_data = json.load(f)
+        
+        print(f"::notice::Event data keys: {list(event_data.keys())}")
+        
+        # Handle different event types
+        if 'pull_request' in event_data:
             pr_number = event_data['pull_request']['number']
             repo_name = event_data['repository']['full_name']
+        elif 'issue' in event_data and event_data.get('issue', {}).get('pull_request'):
+            pr_number = event_data['issue']['number']
+            repo_name = event_data['repository']['full_name']
+        else:
+            print(f"::warning::Unexpected event structure. Available keys: {list(event_data.keys())}")
+            return
+        
+        print(f"::notice::Posting comment to PR #{pr_number} in {repo_name}")
         
         g = Github(github_token)
         repo = g.get_repo(repo_name)
         pr = repo.get_pull(pr_number)
         pr.create_issue_comment(summary)
+        
+        print("::notice::Successfully posted comment to PR")
+        
     except Exception as e:
         print(f"::warning::Failed to post comment to GitHub: {str(e)}")
+        print(f"::warning::Event path: {event_path}")
+        if os.path.exists(event_path):
+            try:
+                with open(event_path, 'r') as f:
+                    print(f"::warning::Event content: {f.read()}")
+            except Exception as read_error:
+                print(f"::warning::Could not read event file: {str(read_error)}")
 
 def main():
     try:
