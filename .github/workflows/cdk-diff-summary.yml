@@ -166,8 +166,11 @@ jobs:
           echo "Checking cdk-diff.json:"
           cat cdk-diff.json || echo "cdk-diff.json not found"
 
-      - name: Summarize and comment
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python summarize_and_comment.py
+      - name: Summarize CDK Diff
+        uses: ./
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          output-format: 'both'
+          model: 'gpt-4'
+          max-tokens: '500'

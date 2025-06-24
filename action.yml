@@ -1,0 +1,65 @@
+name: 'CDK Diff Summarizer'
+description: 'Summarize CDK diffs using AI for better understanding of infrastructure changes'
+author: 'Pauly-DData'
+
+inputs:
+  openai-api-key:
+    description: 'OpenAI API key for generating summaries'
+    required: true
+  aws-region:
+    description: 'AWS region for CDK operations'
+    required: true
+    default: 'us-east-1'
+  cdk-diff-file:
+    description: 'Path to the CDK diff JSON file'
+    required: false
+    default: 'cdk-diff.json'
+  output-format:
+    description: 'Output format: issue, comment, or both'
+    required: false
+    default: 'both'
+  model:
+    description: 'OpenAI model to use for summarization'
+    required: false
+    default: 'gpt-4'
+  max-tokens:
+    description: 'Maximum tokens for the summary'
+    required: false
+    default: '500'
+
+outputs:
+  summary:
+    description: 'The generated AI summary'
+  issue-number:
+    description: 'Issue number if created'
+  success:
+    description: 'Whether the action completed successfully'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+        cache: 'pip'
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install openai PyGithub requests
+
+    - name: Run CDK Diff Summarizer
+      shell: bash
+      run: |
+        python ${{ github.action_path }}/summarize_cdk_diff.py
+      env:
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        AWS_REGION: ${{ inputs.aws-region }}
+        CDK_DIFF_FILE: ${{ inputs.cdk-diff-file }}
+        OUTPUT_FORMAT: ${{ inputs.output-format }}
+        MODEL: ${{ inputs.model }}
+        MAX_TOKENS: ${{ inputs.max-tokens }}
+        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_EVENT_PATH: ${{ github.event_path }} 
