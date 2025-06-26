@@ -47,5 +47,4 @@ jobs:
         with:
           cdk_diff_file: 'mock-cdk-diff.json'
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           create_issue_if_no_pr: 'true' 

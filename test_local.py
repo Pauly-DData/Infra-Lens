@@ -13,7 +13,6 @@ from summarize_cdk_diff import read_cdk_diff, generate_prompt, get_ai_summary_wi
 # WARNING: Only use for local testing, never commit real credentials to git!
 TEST_CREDENTIALS = {
     'OPENAI_API_KEY': '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',  # Replace with your actual key
-    'GITHUB_TOKEN': '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',     # Replace with your actual token
 }
 
 def setup_test_environment():
@@ -22,7 +21,7 @@ def setup_test_environment():
     
     # Set environment variables for testing
     for key, value in TEST_CREDENTIALS.items():
-        if value.startswith('sk-your-') or value.startswith('ghp-your-'):
+        if value.startswith('sk-your-'):
             print(f"⚠️  Please replace the placeholder {key} with your actual credentials")
             print(f"   Current value: {value[:10]}...")
             return False
@@ -205,9 +204,8 @@ def main():
     if not setup_test_environment():
         print("\n📝 To run tests with real API calls, update TEST_CREDENTIALS in this file:")
         print("   1. Get your OpenAI API key from: https://platform.openai.com/api-keys")
-        print("   2. Get your GitHub token from: https://github.com/settings/tokens")
-        print("   3. Replace the placeholder values in TEST_CREDENTIALS")
-        print("   4. Run this script again\n")
+        print("   2. Replace the placeholder value in TEST_CREDENTIALS")
+        print("   3. Run this script again\n")
     
     try:
         test_diff_reading()
