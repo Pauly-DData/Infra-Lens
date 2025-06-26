@@ -9,6 +9,28 @@ import json
 import sys
 from summarize_cdk_diff import read_cdk_diff, generate_prompt, get_ai_summary_with_retry
 
+# Hardcoded credentials for local testing
+# WARNING: Only use for local testing, never commit real credentials to git!
+TEST_CREDENTIALS = {
+    'OPENAI_API_KEY': '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',  # Replace with your actual key
+    'GITHUB_TOKEN': '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',     # Replace with your actual token
+}
+
+def setup_test_environment():
+    """Set up test environment with credentials."""
+    print("🔧 Setting up test environment...")
+    
+    # Set environment variables for testing
+    for key, value in TEST_CREDENTIALS.items():
+        if value.startswith('sk-your-') or value.startswith('ghp-your-'):
+            print(f"⚠️  Please replace the placeholder {key} with your actual credentials")
+            print(f"   Current value: {value[:10]}...")
+            return False
+        os.environ[key] = value
+    
+    print("✅ Test environment set up successfully")
+    return True
+
 def create_test_diff():
     """Create a test CDK diff for local testing."""
     return {
@@ -90,9 +112,9 @@ def test_ai_summary():
     print("🧪 Testing AI summary generation...")
     
     api_key = os.getenv('OPENAI_API_KEY')
-    if not api_key:
-        print("⚠️  Skipping AI test - no OPENAI_API_KEY found")
-        print("   Set OPENAI_API_KEY environment variable to test AI functionality")
+    if not api_key or api_key.startswith('sk-your-'):
+        print("⚠️  Skipping AI test - no valid OPENAI_API_KEY found")
+        print("   Please update TEST_CREDENTIALS in this file with your actual API key")
         return
     
     test_diff = create_test_diff()
@@ -136,9 +158,56 @@ def test_error_handling():
     
     print("✅ Error handling test passed")
 
+def test_full_workflow():
+    """Test the complete workflow from diff to summary."""
+    print("🧪 Testing complete workflow...")
+    
+    # Create test diff
+    test_diff = create_test_diff()
+    with open('workflow-test-diff.json', 'w') as f:
+        json.dump(test_diff, f, indent=2)
+    
+    try:
+        # Read diff
+        diff_data = read_cdk_diff('workflow-test-diff.json')
+        print("✅ Diff reading: OK")
+        
+        # Generate prompt
+        prompt = generate_prompt(diff_data)
+        print("✅ Prompt generation: OK")
+        print(f"   Prompt length: {len(prompt)} characters")
+        
+        # Generate AI summary (if API key available)
+        api_key = os.getenv('OPENAI_API_KEY')
+        if api_key and not api_key.startswith('sk-your-'):
+            summary = get_ai_summary_with_retry(prompt, max_tokens=300)
+            if "Failed" not in summary and "Error" not in summary:
+                print("✅ AI summary generation: OK")
+                print(f"   Summary length: {len(summary)} characters")
+                print(f"   Summary preview: {summary[:100]}...")
+            else:
+                print("⚠️  AI summary generation: Failed")
+        else:
+            print("⚠️  AI summary generation: Skipped (no API key)")
+        
+        print("✅ Complete workflow test passed")
+        
+    finally:
+        # Cleanup
+        if os.path.exists('workflow-test-diff.json'):
+            os.remove('workflow-test-diff.json')
+
 def main():
     """Run all tests."""
     print("🚀 Starting CDK Diff Summarizer local tests...\n")
+    
+    # Check if credentials are set up
+    if not setup_test_environment():
+        print("\n📝 To run tests with real API calls, update TEST_CREDENTIALS in this file:")
+        print("   1. Get your OpenAI API key from: https://platform.openai.com/api-keys")
+        print("   2. Get your GitHub token from: https://github.com/settings/tokens")
+        print("   3. Replace the placeholder values in TEST_CREDENTIALS")
+        print("   4. Run this script again\n")
     
     try:
         test_diff_reading()
@@ -151,6 +220,9 @@ def main():
         print()
         
         test_ai_summary()
+        print()
+        
+        test_full_workflow()
         print()
         
         print("🎉 All tests completed successfully!")
