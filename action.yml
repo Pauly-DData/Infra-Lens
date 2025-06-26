@@ -56,6 +56,7 @@ runs:
 
     - name: Run CDK Diff Summarizer
       shell: bash
+      working-directory: ${{ github.workspace }}
       run: |
         python ${{ github.action_path }}/summarize_cdk_diff.py
       env:
