@@ -234,7 +234,12 @@ def main():
         create_issue_if_no_pr = os.getenv('CREATE_ISSUE_IF_NO_PR', 'false').lower() == 'true'
         
         print(f"::notice::CDK Diff Summarizer starting...")
+        print(f"::notice::Current working directory: {os.getcwd()}")
+        print(f"::notice::Directory contents:")
+        for file in os.listdir('.'):
+            print(f"::notice::  - {file}")
         print(f"::notice::Diff file: {diff_file}")
+        print(f"::notice::Diff file exists: {os.path.exists(diff_file)}")
         print(f"::notice::Output format: {output_format}")
         print(f"::notice::Model: {model}")
         print(f"::notice::Max tokens: {max_tokens}")
