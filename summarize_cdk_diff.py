@@ -218,8 +218,10 @@ def post_to_github(summary: str, output_format: str = "both") -> Optional[int]:
 
 def set_output(name: str, value: str):
     """Set GitHub Action output."""
+    # Escape newlines and special characters for GitHub Actions output
+    escaped_value = value.replace('\n', '%0A').replace('\r', '%0D')
     with open(os.getenv('GITHUB_OUTPUT', '/dev/null'), 'a') as f:
-        f.write(f"{name}={value}\n")
+        f.write(f"{name}={escaped_value}\n")
 
 def main():
     """Main function for the GitHub Action."""
@@ -247,7 +249,9 @@ def main():
         
         # Print summary to GitHub Actions log
         print("::notice::✅ AI Summary van CDK wijzigingen:")
-        print(f"::notice::{summary}")
+        # Escape markdown headers to prevent GitHub Actions from interpreting them as commands
+        escaped_summary = summary.replace('#', '\\#')
+        print(f"::notice::{escaped_summary}")
         
         # Set output
         set_output('summary', summary)
