@@ -1,0 +1,41 @@
+{
+  "stacks": {
+    "DummyStack": {
+      "create": true,
+      "resources": {
+        "MyBucket": {
+          "create": true,
+          "type": "AWS::S3::Bucket"
+        },
+        "MyBucket/Policy": {
+          "create": true,
+          "type": "AWS::S3::BucketPolicy"
+        },
+        "MyBucket/AutoDeleteObjectsCustomResource": {
+          "create": true,
+          "type": "Custom::S3AutoDeleteObjects"
+        },
+        "Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": {
+          "create": true,
+          "type": "AWS::IAM::Role"
+        },
+        "Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": {
+          "create": true,
+          "type": "AWS::Lambda::Function"
+        },
+        "MyFunction/ServiceRole": {
+          "create": true,
+          "type": "AWS::IAM::Role"
+        },
+        "MyFunction/ServiceRole/DefaultPolicy": {
+          "create": true,
+          "type": "AWS::IAM::Policy"
+        },
+        "MyFunction": {
+          "create": true,
+          "type": "AWS::Lambda::Function"
+        }
+      }
+    }
+  }
+} 
