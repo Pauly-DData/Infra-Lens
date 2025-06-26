@@ -9,6 +9,10 @@ on:
 jobs:
   test-action:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45,6 +49,6 @@ jobs:
       - name: Test CDK Diff Summarizer Action
         uses: ./
         with:
-          cdk_diff_file: 'mock-cdk-diff.json'
-          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
-          create_issue_if_no_pr: 'true' 
+          cdk-diff-file: 'mock-cdk-diff.json'
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          create-issue-if-no-pr: 'true' 

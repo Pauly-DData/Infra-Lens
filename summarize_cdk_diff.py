@@ -229,12 +229,14 @@ def main():
         output_format = os.getenv('OUTPUT_FORMAT', 'both')
         model = os.getenv('MODEL', 'gpt-4')
         max_tokens = int(os.getenv('MAX_TOKENS', '500'))
+        create_issue_if_no_pr = os.getenv('CREATE_ISSUE_IF_NO_PR', 'false').lower() == 'true'
         
         print(f"::notice::CDK Diff Summarizer starting...")
         print(f"::notice::Diff file: {diff_file}")
         print(f"::notice::Output format: {output_format}")
         print(f"::notice::Model: {model}")
         print(f"::notice::Max tokens: {max_tokens}")
+        print(f"::notice::Create issue if no PR: {create_issue_if_no_pr}")
         
         # Read and parse CDK diff
         diff_data = read_cdk_diff(diff_file)
@@ -251,10 +253,11 @@ def main():
         set_output('summary', summary)
         set_output('success', 'true')
         
-        # Post summary to GitHub
-        issue_number = post_to_github(summary, output_format)
-        if issue_number:
-            set_output('issue-number', str(issue_number))
+        # Post summary to GitHub (only if create_issue_if_no_pr is true or we have a PR)
+        if create_issue_if_no_pr or output_format in ["comment", "both"]:
+            issue_number = post_to_github(summary, output_format)
+            if issue_number:
+                set_output('issue-number', str(issue_number))
         
         print("::notice::CDK Diff Summarizer completed successfully!")
         

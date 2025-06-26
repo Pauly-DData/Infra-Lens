@@ -26,6 +26,10 @@ inputs:
     description: 'Maximum tokens for the summary'
     required: false
     default: '500'
+  create-issue-if-no-pr:
+    description: 'Create a GitHub issue if no pull request is found'
+    required: false
+    default: 'false'
 
 outputs:
   summary:
@@ -61,5 +65,6 @@ runs:
         OUTPUT_FORMAT: ${{ inputs.output-format }}
         MODEL: ${{ inputs.model }}
         MAX_TOKENS: ${{ inputs.max-tokens }}
+        CREATE_ISSUE_IF_NO_PR: ${{ inputs.create-issue-if-no-pr }}
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_EVENT_PATH: ${{ github.event_path }} 
