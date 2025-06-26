@@ -8,6 +8,10 @@ on:
 jobs:
   summarize-diff:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     env:
       AWS_REGION: ${{ secrets.AWS_REGION }}
 
@@ -171,6 +175,8 @@ jobs:
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+          cdk-diff-file: 'cdk-diff.json'
           output-format: 'both'
           model: 'gpt-4'
           max-tokens: '500'
+          create-issue-if-no-pr: 'true'
