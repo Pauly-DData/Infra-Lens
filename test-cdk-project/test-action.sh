@@ -34,7 +34,7 @@ print_error() {
 # Check if OpenAI API key is set
 if [ -z "$OPENAI_API_KEY" ]; then
     print_warning "OPENAI_API_KEY not set. Some tests will fail."
-    print_warning "Set it with: export OPENAI_API_KEY='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'"
+    print_warning "Set it with: export OPENAI_API_KEY='your-api-key'"
 fi
 
 # Function to test a scenario
