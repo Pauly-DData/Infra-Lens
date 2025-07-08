@@ -1,4 +1,5 @@
 openai>=1.12.0
 requests==2.31.0
 PyGithub==1.59.1
-jinja2>=3.0.0 
+jinja2>=3.0.0
+PyYAML>=6.0.0 
