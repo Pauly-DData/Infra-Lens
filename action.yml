@@ -58,7 +58,7 @@ runs:
       shell: bash
       working-directory: ${{ github.workspace }}
       run: |
-        python ${{ github.action_path }}/src/summarize_cdk_diff.py
+        python ${{ github.action_path }}/src/main.py
       env:
         OPENAI_API_KEY: ${{ inputs.openai-api-key }}
         AWS_REGION: ${{ inputs.aws-region }}

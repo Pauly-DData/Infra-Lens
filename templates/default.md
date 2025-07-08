@@ -1,30 +1,150 @@
 # Infrastructure Changes Summary
 
-## Overview
-{{ overview }}
+## Executive Summary
+{% if changes.summary.total_changes > 0 %}
+This deployment includes **{{ changes.summary.total_changes }}** infrastructure changes across **{{ statistics.total_stacks }}** stacks.
+
+**Changes Breakdown:**
+- ➕ **{{ changes.summary.creates }}** new resources
+- 🔄 **{{ changes.summary.updates }}** updated resources
+- 🗑️ **{{ changes.summary.deletes }}** deleted resources
+- 🔄 **{{ changes.summary.replaces }}** replaced resources
+
+**Risk Level:** {{ statistics.risk_level | format_risk_level }}
+**Cost Impact:** {{ statistics.estimated_cost_impact | format_cost }}
+{% else %}
+No infrastructure changes detected in this deployment.
+{% endif %}
 
 ## Resource Changes
 
-### New Resources
-{{ new_resources }}
+{% if changes.resources %}
+| Action | Resource Type | Resource Name | Stack |
+|--------|---------------|---------------|-------|
+{% for resource in changes.resources %}
+{% for action in resource.actions %}
+| {{ action | format_action }} | {{ resource.type | format_resource_type }} | `{{ resource.id }}` | `{{ resource.stack }}` |
+{% endfor %}
+{% endfor %}
+{% else %}
+No resource changes detected.
+{% endif %}
 
-### Modified Resources
-{{ modified_resources }}
+## Stack Changes
 
-### Deleted Resources
-{{ deleted_resources }}
+{% if changes.stacks %}
+{% for stack in changes.stacks %}
+### {{ stack.name }}
+{% if stack.actions %}
+**Stack Actions:** {% for action in stack.actions %}{{ action | format_action }}{% if not loop.last %}, {% endif %}{% endfor %}
+{% endif %}
 
-## Business Impact
-{{ business_impact }}
+{% if stack.resources %}
+**Resources:**
+{% for resource in stack.resources %}
+- {% for action in resource.actions %}{{ action | format_action }}{% if not loop.last %} + {% endif %}{% endfor %} {{ resource.type | format_resource_type }}: `{{ resource.id }}`
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+{% else %}
+No stack changes detected.
+{% endif %}
 
 ## Security Considerations
-{{ security_considerations }}
 
-## Cost Impact
-{{ cost_impact }}
+{% set security_resources = changes.resources | selectattr('type', 'match', '.*IAM.*|.*KMS.*|.*SecretsManager.*|.*SecurityGroup.*') | list %}
+{% if security_resources %}
+**Security-related changes detected:**
 
-## Recommendations
-{{ recommendations }}
+{% for resource in security_resources %}
+- **{{ resource.type | format_resource_type }}** (`{{ resource.id }}`) in stack `{{ resource.stack }}`
+  {% for action in resource.actions %}- {{ action | format_action }}{% endfor %}
+{% endfor %}
+
+⚠️ **Please review these security-related changes carefully before deployment.**
+{% else %}
+No security-related changes detected.
+{% endif %}
+
+## Cost Impact Analysis
+
+**Estimated Cost Impact:** {{ statistics.estimated_cost_impact | format_cost }}
+
+{% if changes.summary.creates > 0 %}
+### New Resources (Cost Addition)
+- {{ changes.summary.creates }} new resources will be created
+- Monitor costs after deployment
+{% endif %}
+
+{% if changes.summary.deletes > 0 %}
+### Removed Resources (Cost Savings)
+- {{ changes.summary.deletes }} resources will be deleted
+- Potential cost savings from removed resources
+{% endif %}
+
+{% if changes.summary.updates > 0 or changes.summary.replaces > 0 %}
+### Updated Resources (Cost Changes)
+- {{ changes.summary.updates + changes.summary.replaces }} resources will be modified
+- Cost impact depends on configuration changes
+{% endif %}
+
+## Risk Assessment
+
+**Risk Level:** {{ statistics.risk_level | format_risk_level }}
+
+{% if statistics.risk_level == 'high' %}
+🔴 **High Risk Changes Detected**
+- Multiple high-risk resource types being modified
+- Review all changes thoroughly before deployment
+- Consider staging deployment first
+{% elif statistics.risk_level == 'medium' %}
+🟡 **Medium Risk Changes Detected**
+- Some riskier resource types involved
+- Review changes before deployment
+{% else %}
+🟢 **Low Risk Changes Detected**
+- Standard infrastructure changes
+- Proceed with normal deployment process
+{% endif %}
+
+## Deployment Recommendations
+
+{% if statistics.total_changes > 20 %}
+📋 **Large Deployment Detected**
+- Consider breaking into smaller deployments
+- Monitor deployment progress closely
+- Have rollback plan ready
+{% elif statistics.total_changes > 10 %}
+📋 **Medium Deployment Detected**
+- Review all changes before deployment
+- Monitor deployment progress
+{% else %}
+📋 **Small Deployment Detected**
+- Standard deployment process
+- Quick review recommended
+{% endif %}
+
+{% if security_resources %}
+🔒 **Security Review Required**
+- Security-related resources being modified
+- Ensure proper access controls
+- Review IAM policies and permissions
+{% endif %}
+
+## Resource Type Distribution
+
+{% if statistics.resource_types %}
+| Resource Type | Count |
+|---------------|-------|
+{% for resource_type, count in statistics.resource_types.items() %}
+| {{ resource_type | format_resource_type }} | {{ count }} |
+{% endfor %}
+{% endif %}
 
 ---
-*Generated by CDK Diff Summarizer v{{ version }}* 
+
+**Generated by:** {{ metadata.generator }} v{{ metadata.version }}  
+**Model:** {{ metadata.model }}  
+**Generated:** {{ metadata.timestamp }}  
+**Repository:** {{ metadata.repository }} 
