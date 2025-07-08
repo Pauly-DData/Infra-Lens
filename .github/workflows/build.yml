@@ -47,13 +47,19 @@ jobs:
         
     - name: Test basic functionality
       run: |
-        # Test configuration loading
+        # Test configuration structure (without API key)
         python -c "
         import sys
         sys.path.insert(0, 'src')
         from config import Config
-        config = Config()
-        print(f'✅ Config loaded: {config.ai.model}')
+        # Test that we can create config class (will fail validation, but that's expected)
+        try:
+            config = Config()
+        except ValueError as e:
+            if 'AI API key is required' in str(e):
+                print('✅ Config validation working correctly (API key required)')
+            else:
+                raise e
         "
         
     - name: Validate template syntax
@@ -63,6 +69,9 @@ jobs:
         sys.path.insert(0, 'src')
         from templates import TemplateManager
         from config import Config
+        # Create config with dummy API key for template testing
+        import os
+        os.environ['OPENAI_API_KEY'] = 'test-key'
         config = Config()
         tm = TemplateManager(config)
         print(f'✅ Templates loaded: {len(tm.templates)} templates available')

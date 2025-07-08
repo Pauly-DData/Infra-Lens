@@ -47,6 +47,22 @@ jobs:
         print('✅ All modules import successfully')
         "
         
+    - name: Test configuration validation
+      run: |
+        python -c "
+        import sys
+        sys.path.insert(0, 'src')
+        from config import Config
+        # Test that config validation works (will fail without API key, which is expected)
+        try:
+            config = Config()
+        except ValueError as e:
+            if 'AI API key is required' in str(e):
+                print('✅ Config validation working correctly (API key required)')
+            else:
+                raise e
+        "
+        
     - name: Create Release
       uses: actions/create-release@v1
       env:

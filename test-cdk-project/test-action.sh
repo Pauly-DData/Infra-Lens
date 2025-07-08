@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd "$(dirname "$0")"
+
 # Test script for CDK Diff Summarizer Action
 # This script tests the action with different scenarios
 
@@ -32,7 +34,7 @@ print_error() {
 # Check if OpenAI API key is set
 if [ -z "$OPENAI_API_KEY" ]; then
     print_warning "OPENAI_API_KEY not set. Some tests will fail."
-    print_warning "Set it with: export OPENAI_API_KEY='your-api-key'"
+    print_warning "Set it with: export OPENAI_API_KEY='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'"
 fi
 
 # Function to test a scenario
@@ -40,6 +42,9 @@ test_scenario() {
     local scenario_name=$1
     local diff_file=$2
     local expected_result=$3
+    
+    OUTPUT_FILE="output_${scenario_name// /_}.txt"
+    ERROR_FILE="error_${scenario_name// /_}.txt"
     
     print_status "Testing scenario: $scenario_name"
     print_status "Using diff file: $diff_file"
@@ -51,7 +56,7 @@ test_scenario() {
     export CACHE_ENABLED="false"
     
     # Run the action
-    if python3 ../src/main.py; then
+    if python3 ../src/main.py --diff "$diff_file" --output "$OUTPUT_FORMAT" --lang "$LANGUAGE" > "$OUTPUT_FILE" 2> "$ERROR_FILE"; then
         print_success "Scenario '$scenario_name' completed successfully"
     else
         if [ "$expected_result" = "fail" ]; then

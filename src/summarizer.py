@@ -38,16 +38,17 @@ class CDKDiffSummarizer:
             print(f"::warning::CDK diff file not found: {self.config.cdk_diff_file}")
     
     def run(self) -> Dict[str, Any]:
-        """Run the summarizer and return results."""
+        """Run the CDK diff summarizer."""
         try:
             print("::notice::CDK Diff Summarizer starting...")
             print(f"::notice::Working directory: {os.getcwd()}")
             print(f"::notice::CDK diff file: {self.config.cdk_diff_file}")
             
-            # Read CDK diff data
+            # Read CDK diff
             diff_data = self._read_cdk_diff()
             
-            if not diff_data or not self._has_changes(diff_data):
+            # Check for changes
+            if not self._has_changes(diff_data):
                 print("::notice::No changes detected in CDK diff")
                 return self._handle_no_changes()
             

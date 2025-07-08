@@ -52,6 +52,12 @@ class TemplateManager:
         # Add custom functions
         env.globals['get_language_text'] = self._get_language_text
         
+        # Add custom test for regex matching
+        import re
+        def match(value, pattern):
+            return re.match(pattern, value or "") is not None
+        env.tests['match'] = match
+        
         return env
     
     def _load_templates(self) -> Dict[str, Template]:
@@ -261,7 +267,7 @@ class TemplateManager:
             stats['estimated_cost_impact'] = 'moderate'
         else:
             stats['estimated_cost_impact'] = 'minimal'
-        
+        stats['total_changes'] = total_changes
         return stats
     
     def _get_timestamp(self) -> str:

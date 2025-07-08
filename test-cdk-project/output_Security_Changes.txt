@@ -1,0 +1,5 @@
+::notice::CDK Diff Summarizer starting...
+::notice::Working directory: /Users/pauldriessens/Documents/stack_log_impact/test-cdk-project
+::notice::CDK diff file: test-diffs/security-changes.json
+::notice::Attempting OpenAI API call (attempt 1/3)
+::notice::CDK Diff Summarizer completed successfully!
