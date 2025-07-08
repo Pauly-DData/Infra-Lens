@@ -1,0 +1,13 @@
+{
+  "stacks": {
+    "TestStack": {
+      "create": true,
+      "resources": {
+        "TestStack/TestResource": {
+          "type": "AWS::S3::Bucket",
+          "create": true
+        }
+      }
+    }
+  }
+  // Missing closing brace - invalid JSON

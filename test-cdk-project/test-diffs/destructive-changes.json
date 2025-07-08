@@ -1,0 +1,26 @@
+{
+  "stacks": {
+    "OldStack": {
+      "destroy": true,
+      "resources": {
+        "OldStack/OldBucket": {
+          "type": "AWS::S3::Bucket",
+          "destroy": true
+        },
+        "OldStack/OldFunction": {
+          "type": "AWS::Lambda::Function",
+          "destroy": true
+        }
+      }
+    },
+    "NewStack": {
+      "create": true,
+      "resources": {
+        "NewStack/NewBucket": {
+          "type": "AWS::S3::Bucket",
+          "create": true
+        }
+      }
+    }
+  }
+}

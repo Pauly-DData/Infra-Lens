@@ -1,0 +1,47 @@
+{
+  "stacks": {
+    "SimpleStack": {
+      "update": true,
+      "resources": {
+        "SimpleStack/TestBucket": {
+          "type": "AWS::S3::Bucket",
+          "update": true
+        },
+        "SimpleStack/TestFunction": {
+          "type": "AWS::Lambda::Function",
+          "replace": true
+        },
+        "SimpleStack/NewResource": {
+          "type": "AWS::DynamoDB::Table",
+          "create": true
+        }
+      }
+    },
+    "SecurityStack": {
+      "create": true,
+      "resources": {
+        "SecurityStack/TestKey": {
+          "type": "AWS::KMS::Key",
+          "create": true
+        },
+        "SecurityStack/TestRole": {
+          "type": "AWS::IAM::Role",
+          "create": true
+        }
+      }
+    },
+    "DatabaseStack": {
+      "create": true,
+      "resources": {
+        "DatabaseStack/TestDatabase": {
+          "type": "AWS::RDS::DBInstance",
+          "create": true
+        },
+        "DatabaseStack/TestSubnetGroup": {
+          "type": "AWS::RDS::DBSubnetGroup",
+          "create": true
+        }
+      }
+    }
+  }
+}

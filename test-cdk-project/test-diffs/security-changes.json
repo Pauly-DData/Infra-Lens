@@ -1,0 +1,33 @@
+{
+  "stacks": {
+    "SecurityStack": {
+      "create": true,
+      "resources": {
+        "SecurityStack/TestKey": {
+          "type": "AWS::KMS::Key",
+          "create": true
+        },
+        "SecurityStack/TestRole": {
+          "type": "AWS::IAM::Role",
+          "create": true
+        },
+        "SecurityStack/TestPolicy": {
+          "type": "AWS::IAM::Policy",
+          "create": true
+        },
+        "SecurityStack/TestSecret": {
+          "type": "AWS::SecretsManager::Secret",
+          "create": true
+        },
+        "SecurityStack/TestVpc": {
+          "type": "AWS::EC2::VPC",
+          "create": true
+        },
+        "SecurityStack/TestSecurityGroup": {
+          "type": "AWS::EC2::SecurityGroup",
+          "create": true
+        }
+      }
+    }
+  }
+}
