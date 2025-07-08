@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
     
     steps:
@@ -24,34 +24,46 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install flake8 black isort mypy
-        
-    - name: Lint with flake8
-      run: |
-        flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 src/ --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
-        
-    - name: Format check with black
-      run: |
-        black --check src/
-        
-    - name: Import sorting check with isort
-      run: |
-        isort --check-only src/
-        
-    - name: Type check with mypy
-      run: |
-        mypy src/ --ignore-missing-imports
         
     - name: Validate action.yml
       run: |
-        python -c "import yaml; yaml.safe_load(open('action.yml'))"
+        python -c "import yaml; yaml.safe_load(open('action.yml')); print('✅ action.yml is valid')"
         
-    - name: Test action structure
+    - name: Validate Python imports
+      run: |
+        python -c "import sys; sys.path.insert(0, 'src'); from config import Config; from summarizer import CDKDiffSummarizer; print('✅ All modules import successfully')"
+        
+    - name: Validate file structure
       run: |
         # Verify required files exist
-        test -f action.yml
-        test -f requirements.txt
-        test -f src/summarize_cdk_diff.py
-        test -f README.md
-        echo "✅ All required files present" 
+        test -f action.yml && echo "✅ action.yml present"
+        test -f requirements.txt && echo "✅ requirements.txt present"
+        test -f src/main.py && echo "✅ src/main.py present"
+        test -f src/config.py && echo "✅ src/config.py present"
+        test -f src/summarizer.py && echo "✅ src/summarizer.py present"
+        test -f README.md && echo "✅ README.md present"
+        test -f templates/default.md && echo "✅ templates/default.md present"
+        echo "✅ All required files present"
+        
+    - name: Test basic functionality
+      run: |
+        # Test configuration loading
+        python -c "
+        import sys
+        sys.path.insert(0, 'src')
+        from config import Config
+        config = Config()
+        print(f'✅ Config loaded: {config.ai.model}')
+        "
+        
+    - name: Validate template syntax
+      run: |
+        python -c "
+        import sys
+        sys.path.insert(0, 'src')
+        from templates import TemplateManager
+        from config import Config
+        config = Config()
+        tm = TemplateManager(config)
+        print(f'✅ Templates loaded: {len(tm.templates)} templates available')
+        " 

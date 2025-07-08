@@ -24,21 +24,28 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Validate action
+    - name: Validate action structure
       run: |
-        # Test the action with example data
-        export OPENAI_API_KEY="test-key"
-        export AWS_REGION="us-east-1"
-        export CDK_DIFF_FILE="examples/cdk-diff.json"
-        export OUTPUT_FORMAT="comment"
-        export MODEL="gpt-4"
-        export MAX_TOKENS="500"
-        export CREATE_ISSUE_IF_NO_PR="false"
-        export GITHUB_TOKEN="test-token"
-        export GITHUB_EVENT_PATH="/dev/null"
+        # Verify all required files exist
+        test -f action.yml && echo "✅ action.yml present"
+        test -f src/main.py && echo "✅ src/main.py present"
+        test -f requirements.txt && echo "✅ requirements.txt present"
+        test -f README.md && echo "✅ README.md present"
+        echo "✅ All required files present"
         
-        # Run a dry test (should fail gracefully due to invalid API key)
-        python src/summarize_cdk_diff.py || echo "Expected failure due to invalid API key"
+    - name: Validate action.yml syntax
+      run: |
+        python -c "import yaml; yaml.safe_load(open('action.yml')); print('✅ action.yml syntax is valid')"
+        
+    - name: Test module imports
+      run: |
+        python -c "
+        import sys
+        sys.path.insert(0, 'src')
+        from config import Config
+        from summarizer import CDKDiffSummarizer
+        print('✅ All modules import successfully')
+        "
         
     - name: Create Release
       uses: actions/create-release@v1
