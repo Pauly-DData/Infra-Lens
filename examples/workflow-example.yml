@@ -1,0 +1,44 @@
+name: CDK Diff Summary
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  summarize-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      # Setup Node.js for CDK
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      # Install CDK
+      - name: Install CDK
+        run: npm install -g aws-cdk
+      
+      # Configure AWS credentials
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      # Generate CDK diff
+      - name: Generate CDK Diff
+        run: npx cdk diff --json > cdk-diff.json
+      
+      # Use the CDK Diff Summarizer
+      - name: Summarize CDK Diff
+        uses: Pauly-DData/cdk-diff-summarizer@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          output-format: 'both'
+          model: 'gpt-4'
+          max-tokens: '500' 

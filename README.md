@@ -1,6 +1,10 @@
 # CDK Diff Summarizer
 
-A GitHub Action that automatically summarizes AWS CDK diffs using AI, making infrastructure changes easier to understand for both technical and non-technical stakeholders.
+A professional GitHub Action that automatically summarizes AWS CDK diffs using AI, making infrastructure changes easier to understand for both technical and non-technical stakeholders. Understand and explain what is happening during cdk deploys.
+
+[![Build and Test](https://github.com/Pauly-DData/cdk-diff-summarizer/workflows/Build%20and%20Test/badge.svg)](https://github.com/Pauly-DData/cdk-diff-summarizer/actions/workflows/build.yml)
+[![Release](https://github.com/Pauly-DData/cdk-diff-summarizer/workflows/Release/badge.svg)](https://github.com/Pauly-DData/cdk-diff-summarizer/actions/workflows/release.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 
