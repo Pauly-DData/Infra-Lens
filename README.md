@@ -6,26 +6,21 @@ A professional, modular GitHub Action that automatically summarizes AWS CDK diff
 [![Release](https://github.com/Pauly-DData/cdk-diff-summarizer/workflows/Release/badge.svg)](https://github.com/Pauly-DData/cdk-diff-summarizer/actions/workflows/release.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## ✨ Features
-
-- 🤖 **AI-Powered Summaries**: Uses OpenAI's GPT models to generate intelligent summaries
-- 🌍 **Multi-Language Support**: Templates available in English and Dutch (easily extensible)
-- 📊 **Rich Output Formats**: Markdown, JSON, and HTML output formats
-- 🎨 **Customizable Templates**: Jinja2-based template system with custom filters
-- 💾 **Smart Caching**: File-based caching to reduce API calls and improve performance
-- 🔧 **Modular Architecture**: Clean, maintainable codebase with separate concerns
-- 📈 **Risk Assessment**: Automatic risk level calculation based on resource types
-- 💰 **Cost Impact Analysis**: Estimated cost impact assessment
-- 🔒 **Security Focus**: Special attention to security-related resource changes
-- ⚙️ **Flexible Configuration**: Extensive configuration options via environment variables
-
 ## Features
 
-- 🤖 **AI-Powered Summaries**: Uses OpenAI to generate human-readable summaries of CDK diffs
-- 🔄 **Flexible Output**: Post summaries as PR comments, create issues, or both
-- ⚡ **Rate Limiting**: Built-in exponential backoff for API reliability
-- 🛡️ **Error Handling**: Graceful handling of missing diffs and API errors
-- 📊 **Rich Output**: Detailed resource type information and change categorization
+- **AI-Powered Summaries**: Uses OpenAI's GPT models to generate intelligent, human-readable summaries of CDK diffs
+- **Multi-Language Support**: Templates available in English and Dutch (easily extensible)
+- **Rich Output Formats**: Markdown, JSON, and HTML output formats
+- **Flexible Output**: Post summaries as PR comments, create issues, or both
+- **Customizable Templates**: Jinja2-based template system with custom filters
+- **Smart Caching**: File-based caching to reduce API calls and improve performance
+- **Modular Architecture**: Clean, maintainable codebase with separate concerns
+- **Risk Assessment**: Automatic risk level calculation based on resource types
+- **Cost Impact Analysis**: Estimated cost impact assessment
+- **Security Focus**: Special attention to security-related resource changes
+- **Flexible Configuration**: Extensive configuration options via environment variables
+- **Rate Limiting**: Built-in exponential backoff for API reliability
+- **Error Handling**: Graceful handling of missing diffs and API errors
 
 ## Quick Start
 
