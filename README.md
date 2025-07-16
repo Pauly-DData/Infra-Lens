@@ -2,7 +2,7 @@
 
 My general goal is to make complext things as simple as possible so here we go. According to claude.ai and me this project can be summarized as:
 
-A professional, modular GitHub Action that automatically summarizes AWS CDK diffs using AI, making infrastructure changes easier to understand for both technical and non-technical stakeholders. Sometimes you just want words. Understand and explain what is happening during cdk deploys with some help of our friends of AI. Born out of the idea of being bored and also a bit intimidated by looking at resource changes and staring at documentation to understand possible impact (I love documentation though).
+A professional, modular GitHub Action that automatically summarizes AWS CDK diffs using AI, making infrastructure changes easier to understand for both technical and non-technical stakeholders. Sometimes you just want easy words and short sentences, understand and explain what is happening during cdk deploys with some help of our friends of AI. Born out of the idea learning aws and its implications when there are changes and being suprised that some changes (e.g. updates) can impact your cloud stack later on. Probalbvy has to do with my knowledge gap so here we are.
 
 <!--
 
