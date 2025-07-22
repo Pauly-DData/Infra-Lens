@@ -86,33 +86,68 @@ In your repository settings, add these secrets:
 
 ## Inputs
 
-| Input | Description | Required | Default |
-|-------|-------------|----------|---------|
-| `openai-api-key` | OpenAI API key for generating summaries | ✅ Yes | - |
-| `aws-region` | AWS region for CDK operations | ✅ Yes | `us-east-1` |
-| `cdk-diff-file` | Path to the CDK diff JSON file | ❌ No | `cdk-diff.json` |
-| `output-format` | Output format: `issue`, `comment`, or `both` | ❌ No | `both` |
-| `model` | OpenAI model to use for summarization | ❌ No | `gpt-4` |
-| `max-tokens` | Maximum tokens for the summary | ❌ No | `500` |
+| Input | Description | Required | Default | Type |
+|-------|-------------|----------|---------|------|
+| `openai-api-key` | OpenAI API key for generating AI summaries | ✅ Yes | - | string |
+| `cdk-diff-file` | Path to the CDK diff JSON file | ❌ No | `cdk-diff.json` | string |
+| `output-format` | Output format for the summary | ❌ No | `markdown` | choice |
+| `language` | Language for the summary | ❌ No | `en` | choice |
+| `model` | OpenAI model to use for summarization | ❌ No | `gpt-4` | string |
+| `max-tokens` | Maximum tokens for the summary | ❌ No | `500` | string |
+| `fail-on-destructive` | Fail the workflow if destructive changes are detected | ❌ No | `false` | boolean |
+| `post-comment` | Post summary as PR comment | ❌ No | `true` | boolean |
+| `create-issue` | Create GitHub issue if no PR is found | ❌ No | `false` | boolean |
+
+### Output Format Options
+- `markdown` - Standard markdown format (default)
+- `json` - JSON format with metadata
+- `html` - HTML format with styling
+
+### Language Options
+- `en` - English (default)
+- `nl` - Dutch
 
 ## Outputs
 
 | Output | Description |
 |--------|-------------|
 | `summary` | The generated AI summary |
-| `issue-number` | Issue number if created |
+| `risk-score` | Risk assessment score (0-100) |
+| `cost-impact` | Estimated cost impact level |
 | `success` | Whether the action completed successfully |
 
 ## Output Formats
 
-### `comment` (PR Comments)
-Posts the summary as a comment on the pull request.
+### `markdown` (Default)
+Standard markdown format with structured sections:
+- Executive Summary
+- Resource Changes Table
+- Security & Permissions
+- Cost Impact
+- Risk Assessment
+- Deployment Notes
 
-### `issue` (GitHub Issues)
-Creates a new issue with the summary.
+### `json`
+JSON format with metadata and structured data:
+```json
+{
+  "summary": "Markdown summary content",
+  "metadata": {
+    "generator": "CDK Diff Summarizer",
+    "model": "gpt-4",
+    "timestamp": "2024-01-01 12:00:00 UTC"
+  },
+  "risk_score": 75,
+  "cost_impact": "moderate"
+}
+```
 
-### `both` (Default)
-Posts to PR if available, otherwise creates an issue.
+### `html`
+HTML format with styling and formatting:
+- Responsive design
+- Professional styling
+- Metadata included
+- Easy to embed in web applications
 
 ## Example Output
 
@@ -145,10 +180,28 @@ The action generates summaries like this:
   uses: Pauly-DData/cdk-diff-summarizer@v1
   with:
     openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-    aws-region: ${{ secrets.AWS_REGION }}
     model: 'gpt-3.5-turbo'
     max-tokens: '1000'
-    output-format: 'issue'
+    output-format: 'json'
+    language: 'nl'
+```
+
+### Using with Different Output Formats
+
+```yaml
+- name: Summarize CDK Diff (JSON)
+  uses: Pauly-DData/cdk-diff-summarizer@v1
+  with:
+    openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+    output-format: 'json'
+    post-comment: false
+
+- name: Summarize CDK Diff (HTML)
+  uses: Pauly-DData/cdk-diff-summarizer@v1
+  with:
+    openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+    output-format: 'html'
+    create-issue: true
 ```
 
 ### Using with Existing Diff Files
@@ -158,8 +211,19 @@ The action generates summaries like this:
   uses: Pauly-DData/cdk-diff-summarizer@v1
   with:
     openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-    aws-region: ${{ secrets.AWS_REGION }}
     cdk-diff-file: 'my-custom-diff.json'
+    fail-on-destructive: true
+```
+
+### Multi-language Support
+
+```yaml
+- name: Summarize CDK Diff (Dutch)
+  uses: Pauly-DData/cdk-diff-summarizer@v1
+  with:
+    openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+    language: 'nl'
+    post-comment: true
 ```
 
 ## Error Handling
