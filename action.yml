@@ -1,23 +1,32 @@
 name: 'CDK Diff Summarizer'
-description: 'Summarize CDK diffs using AI for better understanding of infrastructure changes'
-author: 'Pauly-DData'
+description: '🤖 AI-powered analysis and summarization of CDK infrastructure changes with risk assessment, cost impact analysis, and deployment recommendations'
+author: 'Pauly-DData <your-email@domain.com>'
 
 inputs:
   openai-api-key:
-    description: 'OpenAI API key for generating summaries'
+    description: 'OpenAI API key for generating AI summaries'
     required: true
-  aws-region:
-    description: 'AWS region for CDK operations'
-    required: true
-    default: 'us-east-1'
   cdk-diff-file:
     description: 'Path to the CDK diff JSON file'
     required: false
     default: 'cdk-diff.json'
   output-format:
-    description: 'Output format: issue, comment, or both'
+    description: 'Output format for the summary'
     required: false
-    default: 'both'
+    default: 'markdown'
+    type: choice
+    options:
+      - markdown
+      - json
+      - html
+  language:
+    description: 'Language for the summary'
+    required: false
+    default: 'en'
+    type: choice
+    options:
+      - en
+      - nl
   model:
     description: 'OpenAI model to use for summarization'
     required: false
@@ -26,16 +35,26 @@ inputs:
     description: 'Maximum tokens for the summary'
     required: false
     default: '500'
-  create-issue-if-no-pr:
-    description: 'Create a GitHub issue if no pull request is found'
+  fail-on-destructive:
+    description: 'Fail the workflow if destructive changes are detected'
+    required: false
+    default: 'false'
+  post-comment:
+    description: 'Post summary as PR comment'
+    required: false
+    default: 'true'
+  create-issue:
+    description: 'Create GitHub issue if no PR is found'
     required: false
     default: 'false'
 
 outputs:
   summary:
     description: 'The generated AI summary'
-  issue-number:
-    description: 'Issue number if created'
+  risk-score:
+    description: 'Risk assessment score (0-100)'
+  cost-impact:
+    description: 'Estimated cost impact level'
   success:
     description: 'Whether the action completed successfully'
 
@@ -52,7 +71,7 @@ runs:
       shell: bash
       run: |
         python -m pip install --upgrade pip
-        pip install openai PyGithub requests
+        pip install -r requirements.txt
 
     - name: Run CDK Diff Summarizer
       shell: bash
@@ -61,11 +80,17 @@ runs:
         python ${{ github.action_path }}/src/main.py
       env:
         OPENAI_API_KEY: ${{ inputs.openai-api-key }}
-        AWS_REGION: ${{ inputs.aws-region }}
         CDK_DIFF_FILE: ${{ inputs.cdk-diff-file }}
         OUTPUT_FORMAT: ${{ inputs.output-format }}
+        LANGUAGE: ${{ inputs.language }}
         MODEL: ${{ inputs.model }}
         MAX_TOKENS: ${{ inputs.max-tokens }}
-        CREATE_ISSUE_IF_NO_PR: ${{ inputs.create-issue-if-no-pr }}
+        FAIL_ON_DESTRUCTIVE: ${{ inputs.fail-on-destructive }}
+        POST_COMMENT: ${{ inputs.post-comment }}
+        CREATE_ISSUE: ${{ inputs.create-issue }}
         GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_EVENT_PATH: ${{ github.event_path }} 
+        GITHUB_EVENT_PATH: ${{ github.event_path }}
+
+branding:
+  icon: 'cloud'
+  color: 'blue' 

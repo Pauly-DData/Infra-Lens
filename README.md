@@ -71,18 +71,21 @@ jobs:
         uses: Pauly-DData/cdk-diff-summarizer@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          output-format: 'both'
+          cdk-diff-file: 'cdk-diff.json'
+          output-format: 'markdown'
+          language: 'en'
+          model: 'gpt-4'
+          max-tokens: '500'
+          fail-on-destructive: 'false'
+          post-comment: 'true'
+          create-issue: 'false'
 ```
 
 ### 2. Set Up Required Secrets
 
-In your repository settings, add these secrets:
+In your repository settings, add this secret:
 
-- `OPENAI_API_KEY`: Your OpenAI API key
-- `AWS_ACCESS_KEY_ID`: AWS access key for CDK operations
-- `AWS_SECRET_ACCESS_KEY`: AWS secret key for CDK operations
-- `AWS_REGION`: AWS region (e.g., `us-east-1`)
+- `OPENAI_API_KEY`: Your OpenAI API key for generating AI summaries
 
 ## Inputs
 
@@ -246,4 +249,24 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-If you encounter any issues or have questions, please [open an issue](https://github.com/Pauly-DData/cdk-diff-summarizer/issues). 
+If you encounter any issues or have questions, please [open an issue](https://github.com/Pauly-DData/cdk-diff-summarizer/issues).
+
+## 📦 GitHub Marketplace
+
+This action is available on the [GitHub Marketplace](https://github.com/marketplace/actions/cdk-diff-summarizer) for easy installation and discovery.
+
+### Installation
+
+1. Go to the [GitHub Marketplace](https://github.com/marketplace/actions/cdk-diff-summarizer)
+2. Click "Use latest version"
+3. Copy the generated workflow code
+4. Add your `OPENAI_API_KEY` secret to your repository
+
+### Features
+
+- 🤖 **AI-Powered Analysis**: Uses OpenAI's GPT models
+- 📊 **Risk Assessment**: Identifies potential security and operational risks
+- 💰 **Cost Impact Analysis**: Estimates financial implications
+- 📝 **Multiple Output Formats**: Markdown, JSON, and HTML
+- 🌍 **Multi-Language Support**: English and Dutch
+- 🔒 **Security Focus**: Highlights IAM and security implications 

@@ -116,4 +116,7 @@ ehthumbs.db
 Thumbs.db
 
 # GitHub Actions
-.github/workflows/cdk-diff-summary.yml 
+.github/workflows/cdk-diff-summary.yml
+
+# Archive (test files and development artifacts)
+archive/ 
