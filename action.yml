@@ -1,6 +1,6 @@
 name: 'CDK Diff Summarizer'
 description: '🤖 AI-powered analysis and summarization of CDK infrastructure changes with risk assessment, cost impact analysis, and deployment recommendations'
-author: 'Pauly-DData <your-email@domain.com>'
+author: 'Pauly-DData' '<paulydriessens@gmail.com>'
 
 inputs:
   openai-api-key:
