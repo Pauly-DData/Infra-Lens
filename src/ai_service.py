@@ -110,12 +110,7 @@ class AIService:
    - Policy modifications
    - Security implications
 
-4. **Cost Impact**
-   - New resources (estimated costs)
-   - Removed resources (cost savings)
-   - Updated resources (cost changes)
-
-5. **Risk Assessment**
+4. **Risk Assessment**
    - Potential risks
    - Mitigation strategies
 

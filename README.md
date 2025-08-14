@@ -28,7 +28,7 @@ This project grew out of my journey learning AWS, IaC, and CloudFormation — an
 - **Smart Caching**: File-based caching to reduce API calls and improve performance
 - **Modular Architecture**: Clean, maintainable codebase with separate concerns
 - **Risk Assessment**: Automatic risk level calculation based on resource types
-- **Cost Impact Analysis**: Estimated cost impact assessment
+
 - **Security Focus**: Special attention to security-related resource changes
 - **Flexible Configuration**: Extensive configuration options via environment variables
 - **Rate Limiting**: Built-in exponential backoff for API reliability
@@ -122,7 +122,7 @@ In your repository settings, add this secret:
 |--------|-------------|
 | `summary` | The generated AI summary |
 | `risk-score` | Risk assessment score (0-100) |
-| `cost-impact` | Estimated cost impact level |
+
 | `success` | Whether the action completed successfully |
 
 ## Output Formats
@@ -132,7 +132,7 @@ Standard markdown format with structured sections:
 - Executive Summary
 - Resource Changes Table
 - Security & Permissions
-- Cost Impact
+
 - Risk Assessment
 - Deployment Notes
 
@@ -147,7 +147,7 @@ JSON format with metadata and structured data:
     "timestamp": "2024-01-01 12:00:00 UTC"
   },
   "risk_score": 75,
-  "cost_impact": "moderate"
+  
 }
 ```
 
@@ -171,7 +171,7 @@ The action generates summaries like this:
 - **IAM Roles & Policies**: Security permissions for the Lambda function
 
 ### Business Impact
-- **Cost**: Minimal - only pay for actual usage
+
 - **Security**: Enhanced with proper IAM roles
 - **Scalability**: Serverless architecture allows automatic scaling
 
@@ -272,7 +272,7 @@ This action is available on the [GitHub Marketplace](https://github.com/marketpl
 
 - 🤖 **AI-Powered Analysis**: Uses OpenAI's GPT models
 - 📊 **Risk Assessment**: Identifies potential security and operational risks
-- 💰 **Cost Impact Analysis**: Estimates financial implications
+
 - 📝 **Multiple Output Formats**: Markdown, JSON, and HTML
 - 🌍 **Multi-Language Support**: English and Dutch
 - 🔒 **Security Focus**: Highlights IAM and security implications 

@@ -11,7 +11,7 @@ This deployment includes **{{ changes.summary.total_changes }}** infrastructure 
 - 🔄 **{{ changes.summary.replaces }}** replaced resources
 
 **Risk Level:** {{ statistics.risk_level | format_risk_level }}
-**Cost Impact:** {{ statistics.estimated_cost_impact | format_cost }}
+
 {% else %}
 No infrastructure changes detected in this deployment.
 {% endif %}
@@ -65,28 +65,6 @@ No stack changes detected.
 ⚠️ **Please review these security-related changes carefully before deployment.**
 {% else %}
 No security-related changes detected.
-{% endif %}
-
-## Cost Impact Analysis
-
-**Estimated Cost Impact:** {{ statistics.estimated_cost_impact | format_cost }}
-
-{% if changes.summary.creates > 0 %}
-### New Resources (Cost Addition)
-- {{ changes.summary.creates }} new resources will be created
-- Monitor costs after deployment
-{% endif %}
-
-{% if changes.summary.deletes > 0 %}
-### Removed Resources (Cost Savings)
-- {{ changes.summary.deletes }} resources will be deleted
-- Potential cost savings from removed resources
-{% endif %}
-
-{% if changes.summary.updates > 0 or changes.summary.replaces > 0 %}
-### Updated Resources (Cost Changes)
-- {{ changes.summary.updates + changes.summary.replaces }} resources will be modified
-- Cost impact depends on configuration changes
 {% endif %}
 
 ## Risk Assessment

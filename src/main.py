@@ -83,10 +83,6 @@ def _set_outputs(result):
         if 'metadata' in result and 'risk_score' in result['metadata']:
             print(f"::set-output name=risk-score::{result['metadata']['risk_score']}")
         
-        # Set cost impact output
-        if 'metadata' in result and 'cost_impact' in result['metadata']:
-            print(f"::set-output name=cost-impact::{result['metadata']['cost_impact']}")
-        
         # Set success output
         print(f"::set-output name=success::{result.get('success', False)}")
         

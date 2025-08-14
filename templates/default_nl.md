@@ -11,7 +11,7 @@ Deze deployment bevat **{{ changes.summary.total_changes }}** infrastructuurwijz
 - 🔄 **{{ changes.summary.replaces }}** vervangen resources
 
 **Risiconiveau:** {{ statistics.risk_level | format_risk_level }}
-**Kostenimpact:** {{ statistics.estimated_cost_impact | format_cost }}
+
 {% else %}
 Geen infrastructuurwijzigingen gedetecteerd in deze deployment.
 {% endif %}
@@ -65,28 +65,6 @@ Geen stack wijzigingen gedetecteerd.
 ⚠️ **Controleer deze beveiligingsgerelateerde wijzigingen zorgvuldig voor deployment.**
 {% else %}
 Geen beveiligingsgerelateerde wijzigingen gedetecteerd.
-{% endif %}
-
-## Kostenimpact Analyse
-
-**Geschatte Kostenimpact:** {{ statistics.estimated_cost_impact | format_cost }}
-
-{% if changes.summary.creates > 0 %}
-### Nieuwe Resources (Kosten Toevoeging)
-- {{ changes.summary.creates }} nieuwe resources worden aangemaakt
-- Monitor kosten na deployment
-{% endif %}
-
-{% if changes.summary.deletes > 0 %}
-### Verwijderde Resources (Kostenbesparing)
-- {{ changes.summary.deletes }} resources worden verwijderd
-- Potentiële kostenbesparing van verwijderde resources
-{% endif %}
-
-{% if changes.summary.updates > 0 or changes.summary.replaces > 0 %}
-### Bijgewerkte Resources (Kostenwijzigingen)
-- {{ changes.summary.updates + changes.summary.replaces }} resources worden gewijzigd
-- Kostenimpact hangt af van configuratiewijzigingen
 {% endif %}
 
 ## Risicobeoordeling

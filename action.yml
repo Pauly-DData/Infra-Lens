@@ -1,5 +1,5 @@
 name: 'CDK Diff Summarizer'
-description: '🤖 AI-powered analysis and summarization of CDK infrastructure changes with risk assessment, cost impact analysis, and deployment recommendations'
+description: '🤖 AI-powered analysis and summarization of CDK infrastructure changes with risk assessment and deployment recommendations'
 author: 'Pauly-DData' '<paulydriessens@gmail.com>'
 
 inputs:
@@ -53,8 +53,7 @@ outputs:
     description: 'The generated AI summary'
   risk-score:
     description: 'Risk assessment score (0-100)'
-  cost-impact:
-    description: 'Estimated cost impact level'
+
   success:
     description: 'Whether the action completed successfully'
 

@@ -46,7 +46,7 @@ class TemplateManager:
         # Add custom filters
         env.filters['format_resource_type'] = self._format_resource_type
         env.filters['format_action'] = self._format_action
-        env.filters['format_cost'] = self._format_cost
+
         env.filters['format_risk_level'] = self._format_risk_level
         
         # Add custom functions
@@ -228,7 +228,7 @@ class TemplateManager:
             'total_resources': len(changes['resources']),
             'resource_types': {},
             'risk_level': 'low',
-            'estimated_cost_impact': 'minimal'
+
         }
         
         # Count resource types
@@ -259,14 +259,6 @@ class TemplateManager:
         else:
             stats['risk_level'] = 'low'
         
-        # Estimate cost impact
-        total_changes = changes['summary']['total_changes']
-        if total_changes > 20:
-            stats['estimated_cost_impact'] = 'significant'
-        elif total_changes > 10:
-            stats['estimated_cost_impact'] = 'moderate'
-        else:
-            stats['estimated_cost_impact'] = 'minimal'
         stats['total_changes'] = total_changes
         return stats
     
@@ -293,14 +285,7 @@ class TemplateManager:
         }
         return action_map.get(action, action.title())
     
-    def _format_cost(self, cost_impact: str) -> str:
-        """Format cost impact for display."""
-        cost_map = {
-            'minimal': '💰 Minimal',
-            'moderate': '💰💰 Moderate',
-            'significant': '💰💰💰 Significant'
-        }
-        return cost_map.get(cost_impact, cost_impact.title())
+
     
     def _format_risk_level(self, risk_level: str) -> str:
         """Format risk level for display."""
@@ -322,7 +307,7 @@ class TemplateManager:
                 'executive_summary': 'Executive Summary',
                 'resource_changes': 'Resource Changes',
                 'security_considerations': 'Security Considerations',
-                'cost_impact': 'Cost Impact',
+
                 'risk_assessment': 'Risk Assessment',
                 'deployment_notes': 'Deployment Notes',
                 'no_changes': 'No infrastructure changes detected',
@@ -335,7 +320,7 @@ class TemplateManager:
                 'executive_summary': 'Uitvoerende Samenvatting',
                 'resource_changes': 'Resource Wijzigingen',
                 'security_considerations': 'Beveiligingsoverwegingen',
-                'cost_impact': 'Kostenimpact',
+
                 'risk_assessment': 'Risicobeoordeling',
                 'deployment_notes': 'Deployment Notities',
                 'no_changes': 'Geen infrastructuurwijzigingen gedetecteerd',
@@ -369,24 +354,7 @@ class TemplateManager:
         
         return action_map.get(action, action.title())
     
-    def _format_cost(self, cost_impact: str) -> str:
-        """Format cost impact for display."""
-        language = self.config.template.language.value
-        
-        if language == 'nl':
-            cost_map = {
-                'minimal': '💰 Minimaal',
-                'moderate': '💰💰 Gemiddeld',
-                'significant': '💰💰💰 Significant'
-            }
-        else:
-            cost_map = {
-                'minimal': '💰 Minimal',
-                'moderate': '💰💰 Moderate',
-                'significant': '💰💰💰 Significant'
-            }
-        
-        return cost_map.get(cost_impact, cost_impact.title())
+
     
     def _format_risk_level(self, risk_level: str) -> str:
         """Format risk level for display."""
