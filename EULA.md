@@ -2,7 +2,7 @@
 
 ## Infra-Lens GitHub Action
 
-**Effective Date:** January 2025  
+**Effective Date:** August 2025  
 **Version:** 1.0
 
 ## 1. Acceptance of Terms
