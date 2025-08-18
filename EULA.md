@@ -104,3 +104,4 @@ If any provision of this EULA is found to be unenforceable or invalid, that prov
 ---
 
 **By using the Infra-Lens GitHub Action, you acknowledge that you have read, understood, and agree to be bound by the terms of this EULA.**
+
