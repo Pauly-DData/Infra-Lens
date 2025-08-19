@@ -1,5 +1,5 @@
-name: 'CDK Diff Summarizer'
-description: '🤖 AI-powered analysis and summarization of CDK infrastructure changes with risk assessment and deployment recommendations'
+name: 'Infra-Lens'
+description: '🤖 AI-powered analysis and summarization of infrastructure changes with risk assessment and deployment recommendations'
 author: 'Pauly-DData <paulydriessens@gmail.com>'
 
 inputs:

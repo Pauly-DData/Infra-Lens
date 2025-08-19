@@ -1,10 +1,10 @@
-# CDK Diff Summarizer
+# Infra-Lens
 
 My general goal is to make complex things as simple as possible — so here we go.
 
 According to Claude.ai (and myself), this project can be summarized as:
 
-A professional, modular GitHub Action that automatically summarizes AWS CDK diffs using AI, making infrastructure changes easier to understand for both technical and non-technical stakeholders.
+A professional, modular GitHub Action that automatically summarizes infrastructure changes using AI, making infrastructure changes easier to understand for both technical and non-technical stakeholders.
 
 Sometimes, you just want simple words and short sentences to explain what’s happening during CDK deploys — with a little help from our AI friends.
 
@@ -39,7 +39,7 @@ This project grew out of my journey learning AWS, IaC, and CloudFormation — an
 ### 1. Add the Action to Your Workflow
 
 ```yaml
-name: CDK Diff Summary
+name: Infra-Lens Summary
 
 on:
   pull_request:
@@ -72,8 +72,8 @@ jobs:
       - name: Generate CDK Diff
         run: npx cdk diff --json > cdk-diff.json
       
-      # Use the CDK Diff Summarizer
-      - name: Summarize CDK Diff
+      # Use Infra-Lens
+      - name: Summarize Infrastructure Changes
         uses: Pauly-DData/cdk-diff-summarizer@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
@@ -259,11 +259,11 @@ If you encounter any issues or have questions, please [open an issue](https://gi
 
 ## 📦 GitHub Marketplace
 
-This action is available on the [GitHub Marketplace](https://github.com/marketplace/actions/infra-lens) for easy installation and discovery.
+This action is available on the [GitHub Marketplace](https://github.com/marketplace/actions/cdk-diff-summarizer) for easy installation and discovery.
 
 ### Installation
 
-1. Go to the [GitHub Marketplace](https://github.com/marketplace/actions/infra-lens)
+1. Go to the [GitHub Marketplace](https://github.com/marketplace/actions/cdk-diff-summarizer)
 2. Click "Use latest version"
 3. Copy the generated workflow code
 4. Add your `OPENAI_API_KEY` secret to your repository
