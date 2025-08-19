@@ -12,8 +12,8 @@ This project grew out of my journey learning AWS, IaC, and CloudFormation — an
 
 <!--
 
-[![Build and Test](https://github.com/Pauly-DData/cdk-diff-summarizer/workflows/Build%20and%20Test/badge.svg)](https://github.com/Pauly-DData/cdk-diff-summarizer/actions/workflows/build.yml)
-[![Release](https://github.com/Pauly-DData/cdk-diff-summarizer/workflows/Release/badge.svg)](https://github.com/Pauly-DData/cdk-diff-summarizer/actions/workflows/release.yml)
+[![Build and Test](https://github.com/CloudLabOne/Infra-Lens/workflows/Build%20and%20Test/badge.svg)](https://github.com/CloudLabOne/Infra-Lens/actions/workflows/build.yml)
+[![Release](https://github.com/CloudLabOne/Infra-Lens/workflows/Release/badge.svg)](https://github.com/CloudLabOne/Infra-Lens/actions/workflows/release.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 -->
@@ -255,15 +255,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-If you encounter any issues or have questions, please [open an issue](https://github.com/Pauly-DData/cdk-diff-summarizer/issues).
+If you encounter any issues or have questions, please [open an issue](https://github.com/CloudLabOne/Infra-Lens/issues).
 
 ## 📦 GitHub Marketplace
 
-This action is available on the [GitHub Marketplace](https://github.com/marketplace/actions/cdk-diff-summarizer) for easy installation and discovery.
+This action is available on the [GitHub Marketplace](https://github.com/marketplace/actions/infra-lens) for easy installation and discovery.
 
 ### Installation
 
-1. Go to the [GitHub Marketplace](https://github.com/marketplace/actions/cdk-diff-summarizer)
+1. Go to the [GitHub Marketplace](https://github.com/marketplace/actions/infra-lens)
 2. Click "Use latest version"
 3. Copy the generated workflow code
 4. Add your `OPENAI_API_KEY` secret to your repository

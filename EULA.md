@@ -95,7 +95,7 @@ Pauly-DData reserves the right to modify this EULA at any time. Changes will be 
 
 For questions about this EULA, contact:
 - **Email:** paulydriessens@gmail.com
-- **GitHub:** https://github.com/Pauly-DData
+- **GitHub:** https://github.com/CloudLabOne
 
 ## 14. Severability
 

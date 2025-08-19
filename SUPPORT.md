@@ -124,10 +124,10 @@ Check our [examples directory](examples/) for:
 
 ### 📞 Contact Information
 
-- **GitHub Issues**: [Create an issue](https://github.com/your-username/cdk-diff-summarizer/issues)
-- **GitHub Discussions**: [Join the discussion](https://github.com/your-username/cdk-diff-summarizer/discussions)
+- **GitHub Issues**: [Create an issue](https://github.com/CloudLabOne/Infra-Lens/issues)
+- **GitHub Discussions**: [Join the discussion](https://github.com/CloudLabOne/Infra-Lens/discussions)
 - **Email**: support@yourdomain.com
-- **Documentation**: [Full docs](https://github.com/your-username/cdk-diff-summarizer#readme)
+- **Documentation**: [Full docs](https://github.com/CloudLabOne/Infra-Lens#readme)
 
 ### ⏰ Response Times
 
@@ -150,4 +150,4 @@ See our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ---
 
-**Need immediate help?** Check our [FAQ](FAQ.md) or search existing [issues](https://github.com/your-username/cdk-diff-summarizer/issues). 
+**Need immediate help?** Check our [FAQ](FAQ.md) or search existing [issues](https://github.com/CloudLabOne/Infra-Lens/issues). 
