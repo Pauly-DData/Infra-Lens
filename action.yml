@@ -1,6 +1,6 @@
 name: 'CDK Diff Summarizer'
 description: '🤖 AI-powered analysis and summarization of CDK infrastructure changes with risk assessment and deployment recommendations'
-author: 'Pauly-DData' '<paulydriessens@gmail.com>'
+author: 'Pauly-DData <paulydriessens@gmail.com>'
 
 inputs:
   openai-api-key:
@@ -53,7 +53,6 @@ outputs:
     description: 'The generated AI summary'
   risk-score:
     description: 'Risk assessment score (0-100)'
-
   success:
     description: 'Whether the action completed successfully'
 
