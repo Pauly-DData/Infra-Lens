@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest an idea for the CDK Diff Summarizer
+about: Suggest an idea for Infra-Lens
 title: '[FEATURE] '
 labels: ['enhancement', 'needs-triage']
 assignees: ''
@@ -25,8 +25,8 @@ assignees: ''
 
 ```yaml
 # Example workflow configuration
-- name: CDK Diff Summarizer
-  uses: your-username/cdk-diff-summarizer@v1
+- name: Infra-Lens
+  uses: CloudLabOne/Infra-Lens@v1
   with:
     # New feature configuration here
 ```

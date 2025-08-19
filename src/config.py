@@ -62,7 +62,7 @@ class TemplateConfig:
 class CacheConfig:
     """Caching configuration."""
     enabled: bool = True
-    cache_dir: str = ".cdk-summarizer-cache"
+    cache_dir: str = ".infra-lens-cache"
     ttl_hours: int = 24
     max_cache_size_mb: int = 100
 

@@ -74,7 +74,7 @@ jobs:
       
       # Use Infra-Lens
       - name: Summarize Infrastructure Changes
-        uses: Pauly-DData/cdk-diff-summarizer@v1
+        uses: CloudLabOne/Infra-Lens@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           cdk-diff-file: 'cdk-diff.json'
@@ -142,7 +142,7 @@ JSON format with metadata and structured data:
 {
   "summary": "Markdown summary content",
   "metadata": {
-    "generator": "CDK Diff Summarizer",
+    "generator": "Infra-Lens",
     "model": "gpt-4",
     "timestamp": "2024-01-01 12:00:00 UTC"
   },
@@ -198,15 +198,15 @@ The action generates summaries like this:
 ### Using with Different Output Formats
 
 ```yaml
-- name: Summarize CDK Diff (JSON)
-  uses: Pauly-DData/cdk-diff-summarizer@v1
+- name: Summarize Infrastructure Changes (JSON)
+  uses: CloudLabOne/Infra-Lens@v1
   with:
     openai-api-key: ${{ secrets.OPENAI_API_KEY }}
     output-format: 'json'
     post-comment: false
 
-- name: Summarize CDK Diff (HTML)
-  uses: Pauly-DData/cdk-diff-summarizer@v1
+- name: Summarize Infrastructure Changes (HTML)
+  uses: CloudLabOne/Infra-Lens@v1
   with:
     openai-api-key: ${{ secrets.OPENAI_API_KEY }}
     output-format: 'html'
@@ -216,8 +216,8 @@ The action generates summaries like this:
 ### Using with Existing Diff Files
 
 ```yaml
-- name: Summarize CDK Diff
-  uses: Pauly-DData/cdk-diff-summarizer@v1
+- name: Summarize Infrastructure Changes
+  uses: CloudLabOne/Infra-Lens@v1
   with:
     openai-api-key: ${{ secrets.OPENAI_API_KEY }}
     cdk-diff-file: 'my-custom-diff.json'
@@ -227,8 +227,8 @@ The action generates summaries like this:
 ### Multi-language Support
 
 ```yaml
-- name: Summarize CDK Diff (Dutch)
-  uses: Pauly-DData/cdk-diff-summarizer@v1
+- name: Summarize Infrastructure Changes (Dutch)
+  uses: CloudLabOne/Infra-Lens@v1
   with:
     openai-api-key: ${{ secrets.OPENAI_API_KEY }}
     language: 'nl'
