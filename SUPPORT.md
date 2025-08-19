@@ -1,8 +1,8 @@
-# Support Guide for CDK Diff Summarizer
+# Support Guide for Infra-Lens
 
 ## 🆘 Getting Help
 
-We're here to help you get the most out of the CDK Diff Summarizer! Here are the best ways to get support:
+We're here to help you get the most out of Infra-Lens! Here are the best ways to get support:
 
 ### 📋 Support Channels
 
@@ -18,7 +18,7 @@ When reporting an issue, please include:
 
 1. **Action Version**: Check the latest release
 2. **GitHub Actions Logs**: Full error output
-3. **CDK Diff File**: Sample of the diff causing issues
+3. **Infrastructure Diff File**: Sample of the diff causing issues
 4. **Workflow Configuration**: Your action.yml setup
 5. **Environment**: GitHub-hosted or self-hosted runner
 
@@ -28,7 +28,7 @@ When reporting an issue, please include:
 
 **Action Version:** [e.g., v1.0.0]
 **GitHub Actions Runner:** [e.g., ubuntu-latest]
-**CDK Version:** [e.g., 2.0.0]
+**Infrastructure Tool Version:** [e.g., CDK 2.0.0, Terraform 1.0.0]
 
 ### Expected Behavior
 [What you expected to happen]
@@ -51,9 +51,9 @@ When reporting an issue, please include:
 [Your workflow configuration]
 ```
 
-### CDK Diff Sample
+### Infrastructure Diff Sample
 ```json
-[Sample of your CDK diff file]
+[Sample of your infrastructure diff file]
 ```
 ```
 
@@ -74,7 +74,7 @@ For feature requests, please:
 - Check that the secret name matches your workflow
 - Verify the API key is valid and has credits
 
-#### Issue: "CDK diff file not found"
+#### Issue: "Infrastructure diff file not found"
 **Solution:**
 - Verify the file path in `cdk-diff-file` input
 - Ensure the file exists in your repository
@@ -83,13 +83,13 @@ For feature requests, please:
 #### Issue: "Action times out"
 **Solution:**
 - Reduce `max-tokens` parameter
-- Simplify complex CDK diffs
+- Simplify complex infrastructure diffs
 - Check OpenAI API rate limits
 
 #### Issue: "Summary not generated"
 **Solution:**
 - Check OpenAI API quota and billing
-- Verify CDK diff file format is valid JSON
+- Verify infrastructure diff file format is valid JSON
 - Review action logs for specific errors
 
 ### 📚 Documentation

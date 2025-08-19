@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Create a report to help us improve the CDK Diff Summarizer
+about: Create a report to help us improve Infra-Lens
 title: '[BUG] '
 labels: ['bug', 'needs-triage']
 assignees: ''
@@ -10,7 +10,7 @@ assignees: ''
 
 **Action Version:** [e.g., v1.0.0]
 **GitHub Actions Runner:** [e.g., ubuntu-latest]
-**CDK Version:** [e.g., 2.0.0]
+**Infrastructure Tool Version:** [e.g., CDK 2.0.0, Terraform 1.0.0]
 **OpenAI Model:** [e.g., gpt-4]
 
 ### Expected Behavior
@@ -38,11 +38,11 @@ assignees: ''
 [Paste your workflow configuration here]
 ```
 
-### CDK Diff Sample
-<!-- A sample of your CDK diff file (remove sensitive data) -->
+### Infrastructure Diff Sample
+<!-- A sample of your infrastructure diff file (remove sensitive data) -->
 
 ```json
-[Paste a sample of your CDK diff here]
+[Paste a sample of your infrastructure diff here]
 ```
 
 ### Environment
