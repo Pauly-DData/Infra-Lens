@@ -7,13 +7,13 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
     requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
 
 setup(
-    name="cdk-diff-summarizer",
+    name="infra-lens",
     version="1.0.0",
     author="Pauly-DData",
-    description="A GitHub Action that summarizes AWS CDK diffs using AI",
+    description="A GitHub Action that summarizes infrastructure changes using AI",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Pauly-DData/cdk-diff-summarizer",
+    url="https://github.com/CloudLabOne/Infra-Lens",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -31,7 +31,7 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "cdk-diff-summarizer=src.summarize_cdk_diff:main",
+            "infra-lens=src.summarize_cdk_diff:main",
         ],
     },
 ) 
